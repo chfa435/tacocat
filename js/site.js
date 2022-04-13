@@ -2,49 +2,71 @@
  function getMessage() {
      let msg = document.getElementById("txtMessage").value;
 
-     //validate if the msg is not equal to empty string
+     //"Just reverse the string and if it is the same as before, it's a palindrome"
      if (msg != '') {
 
-        msg = msg.toUpperCase();
+         msg = msg.toUpperCase();
 
-        let revMessage = reverseMessageB(msg);
-        displayMessage(revMessage);
+         const regex = /[^a-z0-9]/gi;
+         msg = msg.replace(regex, "");
+
+         let palinObj = palinMessageB(msg);
+         displayMessage(palinObj);
 
      } else {
          alert("You must enter a string");
-    }
-
-
-
+     }
  }
 
- //business logic - switch
+ //business logic - 
 
- function reverseMessageA(msg) {
+ function palinMessageA(msg) {
+     msg = msg.replace(/[^A-Z0-9]/ig, "");
      let revMessage = "";
+     let palinMessage = "";
+     revMessage = msg.split("").reverse().join("");
 
-     //decrimenting loop
-     for (let index = msg.length - 1; index >= 0; index--) {
-         let char = msg[index];
-         revMessage += char;
+     if (msg == revMessage) {
+         palinMessage = "That's a palindrome!"
+     } else {
+         palinMessage = "uh-oh, not a palindrome!"
 
      }
 
-     return revMessage
+     return palinMessage
  }
 
- function reverseMessageB(msg){
-    let revMessage = "";
-    revMsgArray = msg.split("");
-    revMessage = revMsgArray.reverse().join("");
+ function palinMessageB(originalWord) {
+     let revWord = "";
+     let returnObj = {};
 
-     return revMessage
+     revWord = originalWord.split("").reverse().join("");
+
+     if (originalWord == revWord) {
+         returnObj.message = `the word/phrase is a palindrome!`;
+         returnObj.IsPalindrome = true;
+
+     } else {
+         returnObj.message = `uh-oh, the word/phrase is not a palindrome!`;
+         returnObj.IsPalindrome = false;
+     }
+
+     returnObj.originalWord = originalWord;
+     returnObj.IsPalindrome = revWord;
+
+     // these are the four properties below
+     //// Is it a Palindrome
+     /// original word
+     // reverse word
+     // message
+     return returnObj
  }
+
 
  //Final Step (DISPLAY = view)
- function displayMessage(message) {
+ function displayMessage(palinObj) {
 
      //first get the ol element from the page
      element = document.getElementById("results");
-     element.innerHTML = message;
+     element.innerHTML = `${palinObj.message} - ${palinObj.originalWord}`;
  }
